@@ -5,5 +5,26 @@ authors = ["ATechnoHazard <amolele@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-diesel = { version = "1.4.5", features = ["postgres"] }
+# Diesel ORM
+diesel = { version = "1.4.5", features = ["postgres", "r2d2", "chrono", "uuid"] }
+diesel_migrations = "1.4.0"
+
+# Rocket REST framework
+rocket = "0.4.5"
+rocket_contrib = { version = "0.4.5", default-features = false, features = ["json"] }
+rocket_cors = "0.5.2"
+
+# Serializer/deserializer
+serde = "1.0.116"
+serde_json = "1.0.57"
+serde_derive = "1.0.116"
+
+# Logger
+slog = "2.5.2"
+slog-term = "2.6.0"
+
+# General purpose dependencies
 dotenv = "0.15.0"
+anyhow = "1.0.32"
+uuid = { version = "0.8.1", features = ["v4"] }
+slog-async = "2.5.0"

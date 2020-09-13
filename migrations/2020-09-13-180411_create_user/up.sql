@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS users
+(
+    id UUID PRIMARY KEY,
+    username VARCHAR,
+    is_active BOOLEAN NOT NULL DEFAULT 'f'
+)
