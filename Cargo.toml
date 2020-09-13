@@ -6,12 +6,12 @@ edition = "2018"
 
 [dependencies]
 # Diesel ORM
-diesel = { version = "1.4.5", features = ["postgres", "r2d2", "chrono", "uuid"] }
+diesel = { version = "1.4.5", features = ["postgres", "r2d2", "chrono", "uuidv07"] }
 diesel_migrations = "1.4.0"
 
 # Rocket REST framework
 rocket = "0.4.5"
-rocket_contrib = { version = "0.4.5", default-features = false, features = ["json"] }
+rocket_contrib = { version = "0.4.5", default-features = false, features = ["json", "uuid"] }
 rocket_cors = "0.5.2"
 
 # Serializer/deserializer
@@ -26,5 +26,5 @@ slog-term = "2.6.0"
 # General purpose dependencies
 dotenv = "0.15.0"
 anyhow = "1.0.32"
-uuid = { version = "0.8.1", features = ["v4"] }
+uuid = { version = ">=0.7.0, <0.9.0", features = ["v4", "serde"] }
 slog-async = "2.5.0"

@@ -2,17 +2,29 @@
 
 #[macro_use]
 extern crate rocket;
+extern crate rocket_contrib;
+#[macro_use]
 extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 #[macro_use]
 extern crate slog;
+#[macro_use]
+extern crate serde;
+#[macro_use]
+extern crate serde_json;
 
 use slog::{Logger, Drain};
 use slog_async;
 use slog_term;
 
 pub mod db;
+pub mod api;
+pub mod schemas;
+pub mod schema;
+pub mod models;
+pub mod crud;
+
 
 embed_migrations!("migrations");
 
@@ -41,6 +53,8 @@ fn main() {
     run_migrations(&logger);
 
     let mut rocket = rocket::ignite()
-        .mount("/", routes![health_check]);
+        .mount("/api", routes![health_check]);
+    rocket = api::endpoints::fuel(rocket);
+    rocket = api::catchers::fuel(rocket);
     rocket.manage(db::pool::pool()).manage(logger).launch();
 }
