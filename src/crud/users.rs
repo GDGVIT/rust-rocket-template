@@ -4,8 +4,8 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use uuid::Uuid;
 
-use crate::models::users::User;
 use crate::diesel_schema::users;
+use crate::models::users::User;
 use crate::schemas::users::{UserCreate, UserUpdate};
 
 pub fn create(db: &PgConnection, user: UserCreate) -> Result<User> {
