@@ -32,3 +32,8 @@ pub fn find_by_name(db: &PgConnection, find_username: String) -> Result<User> {
     let user = users.filter(username.eq(find_username.as_str())).first(db)?;
     Ok(user)
 }
+
+pub fn update(db: &PgConnection, obj_in: &UserUpdate) -> Result<User> {
+    let updated_user = diesel::update(obj_in).set(obj_in).get_result(db)?;
+    Ok(updated_user)
+}

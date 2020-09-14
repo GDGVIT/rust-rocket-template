@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::crud::users;
 use crate::db::guard::DbConn;
 use crate::models::users::User;
-use crate::schemas::users::UserCreate;
+use crate::schemas::users::{UserCreate, UserUpdate};
 
 #[post("/", format = "json", data = "<user>")]
 fn create(user: Json<UserCreate>, db: DbConn) -> Result<Json<User>> {
@@ -22,6 +22,12 @@ fn fetch_by_id(id: RocketUuid, db: DbConn) -> Result<Json<User>> {
     Ok(Json(found_user))
 }
 
+#[patch("/", format = "json", data = "<obj_in>")]
+fn update(obj_in: Json<UserUpdate>, db: DbConn) -> Result<Json<User>> {
+    let updated_user = users::update(&db, &obj_in.0)?;
+    Ok(Json(updated_user))
+}
+
 pub fn fuel(rocket: Rocket) -> Rocket {
-    rocket.mount("/api/users", routes![create, fetch_by_id])
+    rocket.mount("/api/users", routes![create, fetch_by_id, update])
 }
