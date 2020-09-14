@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-use crate::schema::users;
+use crate::diesel_schema::users;
 
 #[table_name = "users"]
 #[derive(AsChangeset, Queryable, Insertable, Serialize, Deserialize)]

@@ -21,7 +21,7 @@ use slog_term;
 pub mod db;
 pub mod api;
 pub mod schemas;
-pub mod schema;
+pub mod diesel_schema;
 pub mod models;
 pub mod crud;
 

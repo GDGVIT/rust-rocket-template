@@ -5,11 +5,11 @@ use diesel::prelude::*;
 use uuid::Uuid;
 
 use crate::models::users::User;
-use crate::schema::users;
+use crate::diesel_schema::users;
 use crate::schemas::users::UserCreate;
 
 pub fn create(db: &PgConnection, user: UserCreate) -> Result<User> {
-    use crate::schema::users::dsl::*;
+    use crate::diesel_schema::users::dsl::*;
     let new_user = User {
         id: Uuid::new_v4(),
         username: user.username,
@@ -28,7 +28,7 @@ pub fn find(db: &PgConnection, id: Uuid) -> Result<User> {
 }
 
 pub fn find_by_name(db: &PgConnection, find_username: String) -> Result<User> {
-    use crate::schema::users::dsl::*;
+    use crate::diesel_schema::users::dsl::*;
     let user = users.filter(username.eq(find_username.as_str())).first(db)?;
     Ok(user)
 }
