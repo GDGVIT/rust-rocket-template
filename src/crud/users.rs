@@ -6,20 +6,20 @@ use uuid::Uuid;
 
 use crate::models::users::User;
 use crate::diesel_schema::users;
-use crate::schemas::users::UserCreate;
+use crate::schemas::users::{UserCreate, UserUpdate};
 
 pub fn create(db: &PgConnection, user: UserCreate) -> Result<User> {
     use crate::diesel_schema::users::dsl::*;
-    let new_user = User {
+    let mut new_user = User {
         id: Uuid::new_v4(),
         username: user.username,
         is_active: user.is_active,
     };
-    insert_into(users)
+    new_user = insert_into(users)
         .values(&new_user)
         .on_conflict_do_nothing()
-        .execute(db)?;
-    Ok(find(db, new_user.id)?)
+        .get_result(db)?;
+    Ok(new_user)
 }
 
 pub fn find(db: &PgConnection, id: Uuid) -> Result<User> {
