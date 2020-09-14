@@ -37,3 +37,9 @@ pub fn update(db: &PgConnection, obj_in: &UserUpdate) -> Result<User> {
     let updated_user = diesel::update(obj_in).set(obj_in).get_result(db)?;
     Ok(updated_user)
 }
+
+pub fn delete(db: &PgConnection, obj_id: Uuid) -> Result<User> {
+    use crate::diesel_schema::users::dsl::*;
+    let deleted_user = diesel::delete(users.filter(id.eq(obj_id))).get_result(db)?;
+    Ok(deleted_user)
+}

@@ -28,6 +28,13 @@ fn update(obj_in: Json<UserUpdate>, db: DbConn) -> Result<Json<User>> {
     Ok(Json(updated_user))
 }
 
+#[delete("/<id>")]
+fn delete(id: RocketUuid, db: DbConn) -> Result<Json<User>> {
+    let uuid = Uuid::from_bytes(*id.as_bytes());
+    let deleted_user = users::delete(&db, uuid)?;
+    Ok(Json(deleted_user))
+}
+
 pub fn fuel(rocket: Rocket) -> Rocket {
-    rocket.mount("/api/users", routes![create, fetch_by_id, update])
+    rocket.mount("/api/users", routes![create, fetch_by_id, update, delete])
 }
