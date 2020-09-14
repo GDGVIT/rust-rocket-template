@@ -19,7 +19,7 @@
 ## Instructions to run
 
 * Pre-requisites:
-	-  [Rust](https://rustup.rs)
+	-  [Rust _nightly_](https://rustup.rs)
 	-  [Diesel CLI](http://diesel.rs/guides/getting-started/)
 
 * Run all pending DB migrations
