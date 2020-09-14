@@ -8,12 +8,12 @@ use crate::diesel_schema::users;
 use crate::models::users::User;
 use crate::schemas::users::{UserCreate, UserUpdate};
 
-pub fn create(db: &PgConnection, user: UserCreate) -> Result<User> {
+pub fn create(db: &PgConnection, obj_in: UserCreate) -> Result<User> {
     use crate::diesel_schema::users::dsl::*;
     let mut new_user = User {
         id: Uuid::new_v4(),
-        username: user.username,
-        is_active: user.is_active,
+        username: obj_in.username,
+        is_active: obj_in.is_active,
     };
     new_user = insert_into(users)
         .values(&new_user)
@@ -22,14 +22,14 @@ pub fn create(db: &PgConnection, user: UserCreate) -> Result<User> {
     Ok(new_user)
 }
 
-pub fn find(db: &PgConnection, id: Uuid) -> Result<User> {
-    let user = users::table.find(id).get_result::<User>(db)?;
+pub fn find(db: &PgConnection, obj_id: Uuid) -> Result<User> {
+    let user = users::table.find(obj_id).get_result::<User>(db)?;
     Ok(user)
 }
 
-pub fn find_by_name(db: &PgConnection, find_username: String) -> Result<User> {
+pub fn find_by_name(db: &PgConnection, username_in: String) -> Result<User> {
     use crate::diesel_schema::users::dsl::*;
-    let user = users.filter(username.eq(find_username.as_str())).first(db)?;
+    let user = users.filter(username.eq(username_in.as_str())).first(db)?;
     Ok(user)
 }
 
