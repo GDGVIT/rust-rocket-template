@@ -6,12 +6,14 @@
 	<h4 align="center"> An opinionated template for quickly getting started with Rust, Rocket and Diesel <h4>
 </p>
 
+![Continuous integration](https://github.com/GDGVIT/rust-rocket-template/workflows/Continuous%20integration/badge.svg)
+
 
 ## Features
 - [x] Diesel - ORM for SQL databases
 - [x] Sample CRUD for a table  
 - [x] Easy error handling and CORS 
-- [ ] Unit tests
+- [x] Unit tests
 
 <br>
 

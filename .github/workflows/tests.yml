@@ -6,6 +6,7 @@ jobs:
   tests:
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     # Docker Hub image that `container-job` executes in
     container: rustlang/rust:nightly
 
