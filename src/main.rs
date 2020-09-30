@@ -11,12 +11,6 @@ extern crate rocket_contrib;
 extern crate serde;
 #[macro_use]
 extern crate serde_json;
-#[macro_use]
-extern crate slog;
-
-use slog::{Drain, Logger};
-use slog_async;
-use slog_term;
 
 pub mod db;
 pub mod api;
@@ -24,17 +18,12 @@ pub mod schemas;
 pub mod diesel_schema;
 pub mod models;
 pub mod crud;
-#[cfg(test)] mod tests;
+
+#[cfg(test)]
+mod tests;
 
 
 embed_migrations!("migrations");
-
-fn run_migrations(logger: &Logger) {
-    let result = embedded_migrations::run(&db::pool::pg_connection());
-    if let Err(e) = result {
-        error!(logger, "migration error: {}", e.to_string());
-    }
-}
 
 #[get("/")]
 fn health_check() -> &'static str {
@@ -42,6 +31,7 @@ fn health_check() -> &'static str {
 }
 
 fn rocket() -> rocket::Rocket {
+    embedded_migrations::run(&db::pool::pg_connection()).expect("expected successful migration");
     let mut rocket = rocket::ignite()
         .mount("/api", routes![health_check]);
     rocket = api::endpoints::fuel(rocket);
@@ -53,13 +43,6 @@ fn main() {
     // Load env variables
     dotenv::dotenv().ok();
 
-    // Set up logger
-    let decorator = slog_term::TermDecorator::new().build();
-    let drain = slog_term::FullFormat::new(decorator).build().fuse();
-    let drain = slog_async::Async::new(drain).build().fuse();
-    let logger = slog::Logger::root(drain, o!());
-
-    run_migrations(&logger);
-
+    // Launch rocket instance
     rocket().launch();
 }
