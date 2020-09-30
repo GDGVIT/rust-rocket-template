@@ -24,6 +24,7 @@ pub mod schemas;
 pub mod diesel_schema;
 pub mod models;
 pub mod crud;
+#[cfg(test)] mod tests;
 
 
 embed_migrations!("migrations");
@@ -40,6 +41,14 @@ fn health_check() -> &'static str {
     "OK"
 }
 
+fn rocket() -> rocket::Rocket {
+    let mut rocket = rocket::ignite()
+        .mount("/api", routes![health_check]);
+    rocket = api::endpoints::fuel(rocket);
+    rocket = api::catchers::fuel(rocket);
+    rocket.manage(db::pool::pool())
+}
+
 fn main() {
     // Load env variables
     dotenv::dotenv().ok();
@@ -52,9 +61,5 @@ fn main() {
 
     run_migrations(&logger);
 
-    let mut rocket = rocket::ignite()
-        .mount("/api", routes![health_check]);
-    rocket = api::endpoints::fuel(rocket);
-    rocket = api::catchers::fuel(rocket);
-    rocket.manage(db::pool::pool()).manage(logger).launch();
+    rocket().launch();
 }
