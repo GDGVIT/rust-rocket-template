@@ -1,10 +1,10 @@
 use std::ops::Deref;
 
-use diesel::PgConnection;
 use diesel::r2d2::{ConnectionManager, PooledConnection};
-use rocket::{Outcome, request, Request, State};
+use diesel::PgConnection;
 use rocket::http::Status;
 use rocket::request::FromRequest;
+use rocket::{request, Outcome, Request, State};
 
 use crate::db::pool::Pool;
 

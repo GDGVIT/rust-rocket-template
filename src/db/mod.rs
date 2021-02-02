@@ -1,2 +1,2 @@
-pub mod pool;
 pub mod guard;
+pub mod pool;

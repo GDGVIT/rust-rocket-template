@@ -1,2 +1,2 @@
-pub mod endpoints;
 pub mod catchers;
+pub mod endpoints;

@@ -12,16 +12,15 @@ extern crate serde;
 #[macro_use]
 extern crate serde_json;
 
-pub mod db;
 pub mod api;
-pub mod schemas;
+pub mod crud;
+pub mod db;
 pub mod diesel_schema;
 pub mod models;
-pub mod crud;
+pub mod schemas;
 
 #[cfg(test)]
 mod tests;
-
 
 embed_migrations!("migrations");
 
@@ -32,8 +31,7 @@ fn health_check() -> &'static str {
 
 fn rocket() -> rocket::Rocket {
     embedded_migrations::run(&db::pool::pg_connection()).expect("expected successful migration");
-    let mut rocket = rocket::ignite()
-        .mount("/api", routes![health_check]);
+    let mut rocket = rocket::ignite().mount("/api", routes![health_check]);
     rocket = api::endpoints::fuel(rocket);
     rocket = api::catchers::fuel(rocket);
     rocket.manage(db::pool::pool())
